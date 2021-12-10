@@ -1,3 +1,4 @@
+// 요청에 반환할 DTO
 package com.example.WebPractice.dto;
 
 import java.util.List;
