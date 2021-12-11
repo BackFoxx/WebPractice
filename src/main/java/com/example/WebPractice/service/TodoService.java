@@ -55,6 +55,7 @@ public class TodoService {
 		}
 	}
 
+	//Update Todo
 	public List<TodoEntity> update(final TodoEntity entity) {
 		//1. 저장할 엔티티가 유효한지 확인한다. 이 메서드는 2.3.1 Create Todo에서 구현했다.
 		valiate(entity);
@@ -75,5 +76,23 @@ public class TodoService {
 			//5.retrieve메서드를 이용해 사용자의 모든 Todo 리스트를 리턴한다.
 			return retrieve(entity.getUserId());
 
+	}
+
+	//Delete Todo
+	public List<TodoEntity> delete(final TodoEntity entity) {
+		//1. 저장할 엔티티가 유효한지 확인한다.
+		valiate(entity);
+		try {
+			//2. 엔티티를 삭제한다.
+			repository.delete(entity);
+		} catch (Exception e) {
+			//3. 예외 발생시 id와 exception을 로깅한다.
+			log.error("Error deleting entity ", entity.getId(), e);
+			//4. 컨트롤러로 exception을 보낸다. 데이터베이스 내부 로직을 캡슐화하려면 e를 리턴하지 않고 새 exception 오브젝트를 리턴한다.
+			throw new RuntimeException("error deleting entity " + entity.getId());
+		}
+
+		//5. 새 Todo 리스트를 가져와 리턴한다.
+		return retrieve(entity.getUserId());
 	}
 }
