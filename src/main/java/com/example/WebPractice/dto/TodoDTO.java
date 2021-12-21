@@ -29,5 +29,4 @@ public class TodoDTO {
 				.done(dto.isDone())
 				.build();
 	}
-	//DTO를 Entity로 변환해줌
 }
