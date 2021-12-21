@@ -33,7 +33,7 @@ public class UserController {
             UserEntity user = UserEntity.builder()
                     .email(userDTO.getEmail())
                     .username(userDTO.getUsername())
-                    .password(userDTO.getPassword()).build();
+                    .password(passwordEncoder.encode(userDTO.getPassword())).build();
 
             UserEntity registerUser = userService.create(user);
             UserDTO responseUserDTO = UserDTO.builder()
@@ -42,11 +42,10 @@ public class UserController {
                     .username(registerUser.getUsername())
                     .build();
 
-            return ResponseEntity.ok().body(responseUserDTO);
+            return ResponseEntity.ok(responseUserDTO);
         } catch (org.hibernate.PropertyValueException e) {
             String error = "입력하지 않은 항목이 있군요";
             ResponseDTO response = ResponseDTO.builder().error(error).build();
-            System.out.println(error);
             return ResponseEntity.badRequest().body(response);
         }
         catch (Exception e) {
@@ -58,13 +57,10 @@ public class UserController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
-        System.out.println("userDTO : "+userDTO);
         UserEntity user =
                 userService.getByCredentials(userDTO.getEmail(),
                         userDTO.getPassword(),
                         passwordEncoder);
-
-        System.out.println("user : "+user);
         if(user != null) {
             final String Token = tokenProvider.create(user);
             final UserDTO responseUserDTO = UserDTO.builder()
@@ -74,7 +70,6 @@ public class UserController {
                     .password(user.getPassword())
                     .token(Token)
                     .build();
-            System.out.println("responseUserDTO : "+responseUserDTO);
             return ResponseEntity.ok().body(responseUserDTO);
         } else {
             ResponseDTO responseDTO = ResponseDTO.builder().error("로그인 실패").build();
