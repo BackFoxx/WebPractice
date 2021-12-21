@@ -1,4 +1,4 @@
-package com.example.WebPractice.persistence;
+package com.example.WebPractice.service.persistence;
 
 import java.util.List;
 

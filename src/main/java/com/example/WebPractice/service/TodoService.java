@@ -1,5 +1,4 @@
 package com.example.WebPractice.service;
-import com.sun.tools.javac.comp.Todo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.WebPractice.Model.TodoEntity;
-import com.example.WebPractice.persistence.TodoRepository;
+import com.example.WebPractice.service.persistence.TodoRepository;
 
 @Slf4j
 @Service
-// ºñÁî´Ï½º ·ÎÁ÷À» ¼öÇàÇÏ´Â ¼­ºñ½º ·¹ÀÌ¾îÀÓÀ» ¾Ë·ÁÁØ´Ù.
+// ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ø´ï¿½.
 public class TodoService {
 	
 	@Autowired
@@ -26,20 +25,20 @@ public class TodoService {
 		return savedEntity.getTitle();
 	}
 	
-	//CreatrTodo ¸Þ¼­µå
+	//CreatrTodo ï¿½Þ¼ï¿½ï¿½ï¿½
 	public List<TodoEntity> create(final TodoEntity entity) {
-		//°ËÁõ
+		//ï¿½ï¿½ï¿½ï¿½
 		valiate(entity);
 
-		//ÀúÀå
+		//ï¿½ï¿½ï¿½ï¿½
 		repository.save(entity);
 		log.info("Entity Id : {} is saved", entity.getId());
 
-		//ÀúÀåµÈ ¿£Æ¼Æ¼¸¦ Æ÷ÇÔÇÏ´Â »õ ¸®½ºÆ®¸¦ ¹ÝÈ¯
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È¯
 		return repository.findByUserId(entity.getUserId());
 	}
 
-	//Retrieve ¸Þ¼­µå
+	//Retrieve ï¿½Þ¼ï¿½ï¿½ï¿½
 	public List<TodoEntity> retrieve(final String userId) {
 		return repository.findByUserId(userId);
 	}
@@ -57,42 +56,42 @@ public class TodoService {
 
 	//Update Todo
 	public List<TodoEntity> update(final TodoEntity entity) {
-		//1. ÀúÀåÇÒ ¿£Æ¼Æ¼°¡ À¯È¿ÇÑÁö È®ÀÎÇÑ´Ù. ÀÌ ¸Þ¼­µå´Â 2.3.1 Create Todo¿¡¼­ ±¸ÇöÇß´Ù.
+		//1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Æ¼ï¿½ï¿½ ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½. ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ 2.3.1 Create Todoï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½.
 		valiate(entity);
 
-		//2. ³Ñ°Ü¹ÞÀº ¿£Æ¼Æ¼ id¸¦ ÀÌ¿ëÇØ TodoEntity¸¦ °¡Á®¿Â´Ù.
+		//2. ï¿½Ñ°Ü¹ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Æ¼ idï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ TodoEntityï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 		final Optional<TodoEntity> original = repository.findById(entity.getId());
 
 		if(original.isPresent())
-		//3. ¹ÝÈ¯µÈ TodoEntity°¡ Á¸ÀçÇÏ¸é °ªÀ» »õ entity °ªÀ¸·Î µ¤¾î ¾º¿î´Ù.
+		//3. ï¿½ï¿½È¯ï¿½ï¿½ TodoEntityï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ entity ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
 		{
 			final TodoEntity todo = original.get();
 			todo.setTitle(entity.getTitle());
 			todo.setDone(entity.getDone());
 
-			//4. µ¥ÀÌÅÍº£ÀÌ½º¿¡ »õ °ªÀ» ÀúÀåÇÑ´Ù.
+			//4. ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 			repository.save(todo);
 		}
-			//5.retrieve¸Þ¼­µå¸¦ ÀÌ¿ëÇØ »ç¿ëÀÚÀÇ ¸ðµç Todo ¸®½ºÆ®¸¦ ¸®ÅÏÇÑ´Ù.
+			//5.retrieveï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Todo ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 			return retrieve(entity.getUserId());
 
 	}
 
 	//Delete Todo
 	public List<TodoEntity> delete(final TodoEntity entity) {
-		//1. ÀúÀåÇÒ ¿£Æ¼Æ¼°¡ À¯È¿ÇÑÁö È®ÀÎÇÑ´Ù.
+		//1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Æ¼ï¿½ï¿½ ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½.
 		valiate(entity);
 		try {
-			//2. ¿£Æ¼Æ¼¸¦ »èÁ¦ÇÑ´Ù.
+			//2. ï¿½ï¿½Æ¼Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 			repository.delete(entity);
 		} catch (Exception e) {
-			//3. ¿¹¿Ü ¹ß»ý½Ã id¿Í exceptionÀ» ·Î±ëÇÑ´Ù.
+			//3. ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ idï¿½ï¿½ exceptionï¿½ï¿½ ï¿½Î±ï¿½ï¿½Ñ´ï¿½.
 			log.error("Error deleting entity ", entity.getId(), e);
-			//4. ÄÁÆ®·Ñ·¯·Î exceptionÀ» º¸³½´Ù. µ¥ÀÌÅÍº£ÀÌ½º ³»ºÎ ·ÎÁ÷À» Ä¸½¶È­ÇÏ·Á¸é e¸¦ ¸®ÅÏÇÏÁö ¾Ê°í »õ exception ¿ÀºêÁ§Æ®¸¦ ¸®ÅÏÇÑ´Ù.
+			//4. ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ï¿½ï¿½ exceptionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä¸ï¿½ï¿½È­ï¿½Ï·ï¿½ï¿½ï¿½ eï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ï¿½ exception ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 			throw new RuntimeException("error deleting entity " + entity.getId());
 		}
 
-		//5. »õ Todo ¸®½ºÆ®¸¦ °¡Á®¿Í ¸®ÅÏÇÑ´Ù.
+		//5. ï¿½ï¿½ Todo ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 		return retrieve(entity.getUserId());
 	}
 }

@@ -1,7 +1,7 @@
 package com.example.WebPractice.service;
 
 import com.example.WebPractice.Model.UserEntity;
-import com.example.WebPractice.persistence.UserRepository;
+import com.example.WebPractice.service.persistence.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

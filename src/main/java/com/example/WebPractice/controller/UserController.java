@@ -3,6 +3,7 @@ package com.example.WebPractice.controller;
 import com.example.WebPractice.Model.UserEntity;
 import com.example.WebPractice.dto.ResponseDTO;
 import com.example.WebPractice.dto.UserDTO;
+import com.example.WebPractice.security.TokenProvider;
 import com.example.WebPractice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
@@ -48,10 +51,12 @@ public class UserController {
         UserEntity user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
 
         if(user != null) {
+            final String Token = tokenProvider.create(user);
             final UserDTO responseUserDTO = UserDTO.builder()
                     .email(user.getEmail())
                     .username(user.getUsername())
                     .id(user.getId())
+                    .token(Token)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
         } else {
